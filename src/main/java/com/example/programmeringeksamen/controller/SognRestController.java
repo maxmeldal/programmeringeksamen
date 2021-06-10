@@ -30,11 +30,11 @@ public class SognRestController {
         return ResponseEntity.status(HttpStatus.OK).body(sognRepository.findAll());
     }
 
-    @GetMapping("/sogn/{kode}")
-    public ResponseEntity<Optional<Sogn>> findBySogneKode(@PathVariable Long kode){
+    @GetMapping("/sogn/{id}")
+    public ResponseEntity<Optional<Sogn>> findBySogneId(@PathVariable Long id){
 
         //attempts to get sogn by idea and stores return value (sogn or nullobject) in optional
-        Optional<Sogn> optionalSogn = sognRepository.findById(kode);
+        Optional<Sogn> optionalSogn = sognRepository.findById(id);
 
         //if object exists within optional, return said object with httpstatus OK
         if(optionalSogn.isPresent()){
@@ -47,51 +47,72 @@ public class SognRestController {
     @CrossOrigin(origins = "*", exposedHeaders = "Location")
     @PostMapping(value = "/sogne", consumes = "application/json")
     public ResponseEntity<String> create (@RequestBody Sogn s){
+        //save input in local object
         Sogn sogn = new Sogn(s.getKode(), s.getNavn(), s.getSmittetryk(), s.getDatoForNedlukning());
+        //save local object
         sognRepository.save(sogn);
 
+        //get kommune from input
         Kommune kommune = s.getKommune();
+        //set kommune's sogn to local object
         kommune.setSogn(sogn);
+        //save kommune
         kommuneRepository.save(kommune);
 
+        //set sogn's kommune to the one just created
         sogn.setKommune(kommune);
+        //save that sogn
         sognRepository.save(sogn);
 
         return ResponseEntity.status(HttpStatus.CREATED).header("Location", "/sogn/" + sogn.getKode())
                 .body("{'msg': 'Post Created'}");
     }
 
-    @PutMapping("/sogn/{kode}")
-    public ResponseEntity<String> update(@PathVariable("kode") Long kode, @RequestBody Sogn sogn){
+    @PutMapping("/sogn/{id}")
+    public ResponseEntity<String> update(@PathVariable("id") Long id, @RequestBody Sogn sogn){
 
         //get sogn to be updated
-        Optional<Sogn> optionalSogn = sognRepository.findById(kode);
+        Optional<Sogn> optionalSogn = sognRepository.findById(id);
 
         //return not found if id doesn't exist
         if(!optionalSogn.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{'msg' : 'sogn " + kode + " not found'");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{'msg' : 'sogn " + id + " not found'");
         }
 
         //update sogn
         sognRepository.save(sogn);
 
         //return no content
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("{'msg' : 'updated'}");
+        return ResponseEntity.status(HttpStatus.OK).body("{'msg' : 'updated'}");
     }
 
-    @DeleteMapping("/sogn/{kode}")
-    public ResponseEntity<String> delete(@PathVariable("kode") Long kode){
+    @DeleteMapping("/sogn/{id}")
+    public ResponseEntity<String> delete(@PathVariable("id") Long id){
 
         //get sogn
-        Optional<Sogn> optionalSogn = sognRepository.findById(kode);
+        Optional<Sogn> optionalSogn = sognRepository.findById(id);
 
         //return not found if id doesn't exist
         if(!optionalSogn.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{'msg' : 'sogn " + kode + " not found'");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{'msg' : 'sogn " + id + " not found'");
         }
 
-        //delete sogn
-        sognRepository.deleteById(kode);
+        //save sogn and kommune in local objects from optional
+        Sogn sogn = optionalSogn.get();
+        Kommune kommune = sogn.getKommune();
+
+        //set sogn's kommune to null
+        sogn.setKommune(null);
+        sognRepository.save(sogn);
+
+        //set kommune's sogn to null
+        kommune.setSogn(null);
+        kommuneRepository.save(kommune);
+
+        //delete kommune and sogn
+        kommuneRepository.delete(kommune);
+        sognRepository.deleteById(id);
+
 
         //return status ok
         return ResponseEntity.status(HttpStatus.OK).body("{'msg' : 'deleted'}");

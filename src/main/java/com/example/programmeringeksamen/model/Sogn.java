@@ -2,22 +2,23 @@ package com.example.programmeringeksamen.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 public class Sogn {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     private Long kode;
 
     private String navn;
 
     //OneToOne relationship
     @JsonManagedReference
-    @OneToOne
+    @OneToOne (cascade = CascadeType.ALL)
     private Kommune kommune;
 
     private Double smittetryk;
@@ -32,6 +33,14 @@ public class Sogn {
         this.navn = navn;
         this.smittetryk = smittetryk;
         this.datoForNedlukning = datoForNedlukning;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Long getKode() {
@@ -77,8 +86,9 @@ public class Sogn {
     @Override
     public String toString() {
         return "Sogn{" +
-                "Kode=" + kode +
-                ", Navn='" + navn + '\'' +
+                "id=" + id +
+                ", kode=" + kode +
+                ", navn='" + navn + '\'' +
                 ", kommune=" + kommune +
                 ", smittetryk=" + smittetryk +
                 ", datoForNedlukning=" + datoForNedlukning +

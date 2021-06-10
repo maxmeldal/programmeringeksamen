@@ -5,15 +5,15 @@ INSERT INTO sogn (kode, navn, dato_for_nedlukning, smittetryk) VALUES
 (8368, 'Vor Frue', TO_DATE('04/06/2021', 'DD/MM/YYYY'), 1.1),
 (9310, 'Høsterkøb', TO_DATE('29/05/2021', 'DD/MM/YYYY'), 0.9);
 
-INSERT INTO kommune (kode, navn, sogn_kode) VALUES
-(630, 'Vejle', 7975),
-(851, 'Aalborg', 8364),
-(230, 'Rudersdal', 8366),
-(522, 'København', 8368),
-(133, 'Randers', 9310);
+INSERT INTO kommune (kode, navn, sogn_id) VALUES
+(630, 'Vejle', 1),
+(851, 'Aalborg', 2),
+(230, 'Rudersdal', 3),
+(522, 'København', 4),
+(133, 'Randers', 5);
 
-UPDATE sogn SET kommune_kode=630 where kode=7975;
-UPDATE sogn SET kommune_kode=851 where kode=8364;
-UPDATE sogn SET kommune_kode=230 where kode=8366;
-UPDATE sogn SET kommune_kode=522 where kode=8368;
-UPDATE sogn SET kommune_kode=133 where kode=9310;
+UPDATE sogn SET kommune_id=1 where id=1;
+UPDATE sogn SET kommune_id=2 where id=2;
+UPDATE sogn SET kommune_id=3 where id=3;
+UPDATE sogn SET kommune_id=4 where id=4;
+UPDATE sogn SET kommune_id=5 where id=5;
