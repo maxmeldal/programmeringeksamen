@@ -1,7 +1,7 @@
 package com.example.programmeringeksamen.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 import javax.persistence.*;
@@ -24,18 +24,20 @@ public class Sogn {
     @JoinColumn(name = "kommune_id")
     private Kommune kommune;
 
-    private Double smittetryk;
+    private Double positivProcent;
 
+    //datetimeformat for html
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate datoForNedlukning;
 
     public Sogn() {
     }
 
-    public Sogn(Long kode, String navn, Kommune kommune, Double smittetryk, LocalDate datoForNedlukning) {
+    public Sogn(Long kode, String navn, Kommune kommune, Double positivProcent, LocalDate datoForNedlukning) {
         this.kode = kode;
         this.navn = navn;
         this.kommune = kommune;
-        this.smittetryk = smittetryk;
+        this.positivProcent = positivProcent;
         this.datoForNedlukning = datoForNedlukning;
     }
 
@@ -45,6 +47,13 @@ public class Sogn {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public boolean getNedlukket(){
+        if(datoForNedlukning.isBefore(LocalDate.now())){
+            return true;
+        }
+        return false;
     }
 
     public Long getKode() {
@@ -71,12 +80,12 @@ public class Sogn {
         this.kommune = kommune;
     }
 
-    public Double getSmittetryk() {
-        return smittetryk;
+    public Double getPositivProcent() {
+        return positivProcent;
     }
 
-    public void setSmittetryk(Double smittetryk) {
-        this.smittetryk = smittetryk;
+    public void setPositivProcent(Double smittetryk) {
+        this.positivProcent = smittetryk;
     }
 
     public LocalDate getDatoForNedlukning() {
@@ -94,7 +103,7 @@ public class Sogn {
                 ", kode=" + kode +
                 ", navn='" + navn + '\'' +
                 ", kommune=" + kommune +
-                ", smittetryk=" + smittetryk +
+                ", smittetryk=" + positivProcent +
                 ", datoForNedlukning=" + datoForNedlukning +
                 '}';
     }

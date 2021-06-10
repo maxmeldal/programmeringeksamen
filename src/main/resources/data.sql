@@ -3,7 +3,7 @@ INSERT INTO kommune (kode, navn) VALUES
 (851, 'Aalborg'),
 (230, 'Rudersdal');
 
-INSERT INTO sogn (kode, navn, kommune_id, dato_for_nedlukning, smittetryk) VALUES
+INSERT INTO sogn (kode, navn, kommune_id, dato_for_nedlukning, positiv_procent) VALUES
 (7975, 'Givskud', 1, TO_DATE('03/06/2021', 'DD/MM/YYYY'), 2.1),
 (8364, 'Budolfi', 2, TO_DATE('30/05/2021', 'DD/MM/YYYY'), 1.8),
 (8366, 'Vor Frelsers', 2, TO_DATE('24/05/2021', 'DD/MM/YYYY'), 1.5),

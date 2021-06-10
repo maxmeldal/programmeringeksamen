@@ -63,7 +63,7 @@ public class SognRestController {
         }
 
         //save input in local object
-        Sogn sogn = new Sogn(s.getKode(), s.getNavn(), kommuneRepository.findById(id).get(), s.getSmittetryk(), s.getDatoForNedlukning());
+        Sogn sogn = new Sogn(s.getKode(), s.getNavn(), kommuneRepository.findById(id).get(), s.getPositivProcent(), s.getDatoForNedlukning());
         //save local object
         sognRepository.save(sogn);
 
