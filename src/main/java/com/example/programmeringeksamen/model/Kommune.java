@@ -22,6 +22,7 @@ public class Kommune {
     @OneToMany (cascade = CascadeType.ALL, mappedBy = "kommune")
     private Set<Sogn> sogne;
 
+    //constructor overload
     public Kommune() {
     }
 
@@ -41,6 +42,8 @@ public class Kommune {
         return total/count;
     }
 
+
+    //STANDARD GETTERS AND SETTERS
     public long getId() {
         return id;
     }
@@ -73,6 +76,7 @@ public class Kommune {
         this.sogne = sogns;
     }
 
+    //STANDARD TOSTRING
     @Override
     public String toString() {
         return "Kommune{" +

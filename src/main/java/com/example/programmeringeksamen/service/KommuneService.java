@@ -37,16 +37,4 @@ public class KommuneService {
     public Kommune create(Kommune kommune){
         return kommuneRepository.save(kommune);
     }
-
-    public Kommune update(Kommune kommune){
-        if (!findAll().contains(kommune)){
-            throw new RuntimeException("kommune " + kommune.getId() + " not found");
-        } else {
-            return kommuneRepository.save(kommune);
-        }
-    }
-
-    public void deleteById(Long id){
-        kommuneRepository.deleteById(id);
-    }
 }

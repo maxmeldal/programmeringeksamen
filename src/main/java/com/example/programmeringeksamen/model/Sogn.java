@@ -26,10 +26,11 @@ public class Sogn {
 
     private Double positivProcent;
 
-    //datetimeformat for html
+    //datetimeformatter makes so controller can retrieve html date format and create object
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate datoForNedlukning;
 
+    //constructor overload
     public Sogn() {
     }
 
@@ -41,19 +42,18 @@ public class Sogn {
         this.datoForNedlukning = datoForNedlukning;
     }
 
+    //method to check if sogn currently is nedlukket
+    public boolean getNedlukket(){
+        return datoForNedlukning.isBefore(LocalDate.now());
+    }
+
+    //STANDARD GETTERS AND SETTERS
     public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public boolean getNedlukket(){
-        if(datoForNedlukning.isBefore(LocalDate.now())){
-            return true;
-        }
-        return false;
     }
 
     public Long getKode() {
@@ -96,6 +96,7 @@ public class Sogn {
         this.datoForNedlukning = datoForNedlukning;
     }
 
+    //STANDARD TOSTRING
     @Override
     public String toString() {
         return "Sogn{" +

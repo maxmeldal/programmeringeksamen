@@ -4,7 +4,7 @@
       integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 <head>
     <meta charset="UTF-8">
-    <title>Tilføj Sogn</title>
+    <title>Tilføj kommune</title>
 </head>
 <body>
 <div class="container">
@@ -12,22 +12,10 @@
     <h1>Tilføj</h1>
   </div>
   <div class="row">
-    <form action="/create" method="post" th:object="${sogn}">
+    <form action="/createKommune" method="post" th:object="${kommune}">
       <div class="form-group">
-        <input class="form-control" type="number" name="kode" placeholder="Sogne kode">
         <input class="form-control" type="text" name="navn" placeholder="Navn">
-        <input class="form-control" type="number" min="0" step=".01" name="positivProcent" placeholder="positiv procent">
-        <input class="form-control" type="date" name="datoForNedlukning" placeholder="Dato for nedlukning">
-      </div>
-      <div class="form-group">
-        <label for="kommune">Vælg kommune</label>
-        <select class="form-control selectpicker" id="kommune" name="kommune">
-          <option th:each="kommune : ${kommuner}"
-                  th:value="${kommune.id}"
-                  th:text="${kommune.navn}"
-          >brand
-          </option>
-        </select>
+        <input class="form-control" type="number" name="kode" placeholder="Kommune kode">
       </div>
       <p id="space"></p>
       <div class="form-group">
