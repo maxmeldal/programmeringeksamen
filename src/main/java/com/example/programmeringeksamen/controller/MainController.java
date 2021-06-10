@@ -30,6 +30,12 @@ public class MainController {
         return "index";
     }
 
+    @GetMapping("/kommuner")
+    public String kommuner(Model model){
+        model.addAttribute("kommuner", kommuneService.findAll());
+        return "kommuner";
+    }
+
     @GetMapping("/create")
     public String create(Model model){
         //add kommuner to be selected from
@@ -42,6 +48,20 @@ public class MainController {
         sogn.setDatoForNedlukning(LocalDate.parse(request.getParameter("datoForNedlukning")));
         sognService.create(sogn);
         return"redirect:/";
+    }
+
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable("id") Long id, Model model){
+        model.addAttribute("sogn", sognService.findById(id));
+        //add kommuner to choose from
+        model.addAttribute("kommuner", kommuneService.findAll());
+        return "update";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute Sogn sogn){
+        sognService.update(sogn);
+        return "redirect:/";
     }
 
     @GetMapping("/delete/{id}")

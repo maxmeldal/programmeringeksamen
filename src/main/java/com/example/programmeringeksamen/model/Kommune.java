@@ -30,6 +30,17 @@ public class Kommune {
         this.navn = navn;
     }
 
+    //method returns average positivprocent of sogne
+    public double getAveragePositivProcent(){
+        double total=0;
+        int count=0;
+        for (Sogn sogn : sogne) {
+            total += sogn.getPositivProcent();
+            count++;
+        }
+        return total/count;
+    }
+
     public long getId() {
         return id;
     }

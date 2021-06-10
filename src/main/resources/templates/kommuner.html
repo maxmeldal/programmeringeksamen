@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:classth="http://www.w3.org/1999/xhtml">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <title>Kommuner</title>
+</head>
+<body>
+<div class="container">
+    <h1 style="text-align: center">Kommuner</h1>
+    <div class="row">
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Kode</th>
+                <th>Navn</th>
+                <th>Positiv procent</th>
+                <th>Rediger</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="kommune : ${kommuner}">
+                <td th:text="${kommune.id}"/>
+                <td th:text="${kommune.kode}"/>
+                <td th:text="${kommune.navn}"/>
+                <td th:text="${kommune.getAveragePositivProcent()}"/>
+                <td>
+                    <div class="btn-group">
+                        <a th:href="@{'/update/' + ${kommune.id}}" class="btn btn-warning">Opdater</a>
+                        <a th:href="@{'/delete/' + ${kommune.id}}" class="btn btn-danger">Slet</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

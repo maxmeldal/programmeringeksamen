@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class SognService {
@@ -39,11 +37,17 @@ public class SognService {
     }
 
     public Sogn update(Sogn sogn){
-        if (!findAll().contains(sogn)){
-            throw new RuntimeException("sogn " + sogn.getId() + " not found");
-        } else {
-            return sognRepository.save(sogn);
+        //saves ids of all sogne in list
+        List<Long> ids = new ArrayList<>();
+        for (Sogn s:sognRepository.findAll()){
+            ids.add(s.getId());
         }
+
+        //if list of sogne ids does not contain the id of the updated sogn return exception
+        if (!ids.contains(sogn.getId())){
+            throw new RuntimeException("sogn " + sogn.getId() + " not found");
+        }
+        return sognRepository.save(sogn);
     }
 
     public void deleteById(Long id){
