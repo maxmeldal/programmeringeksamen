@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,7 +21,7 @@ public class Kommune {
     //OneToOne relationship
     @JsonManagedReference
     @OneToMany (cascade = CascadeType.ALL, mappedBy = "kommune")
-    private Set<Sogn> sogne;
+    private List<Sogn> sogne;
 
     //constructor overload
     public Kommune() {
@@ -68,11 +69,11 @@ public class Kommune {
         this.navn = navn;
     }
 
-    public Set<Sogn> getSogne() {
+    public List<Sogn> getSogne() {
         return sogne;
     }
 
-    public void setSogne(Set<Sogn> sogns) {
+    public void setSogne(List<Sogn> sogns) {
         this.sogne = sogns;
     }
 

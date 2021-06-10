@@ -14,8 +14,8 @@ public class SognService {
     SognRepository sognRepository;
 
     //method returns sogne in hashset instead of iterable
-    public Set<Sogn> findAll(){
-        Set<Sogn> sogne = new HashSet<>();
+    public List<Sogn> findAll(){
+        List<Sogn> sogne = new ArrayList<>();
         for (Sogn sogn : sognRepository.findAll()) {
             sogne.add(sogn);
         }

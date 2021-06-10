@@ -6,9 +6,7 @@ import com.example.programmeringeksamen.repository.KommuneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class KommuneService {
@@ -17,8 +15,8 @@ public class KommuneService {
     KommuneRepository kommuneRepository;
 
     //method returns kommuner in hashset instead of iterable
-    public Set<Kommune> findAll(){
-        Set<Kommune> kommuner = new HashSet<>();
+    public List<Kommune> findAll(){
+        List<Kommune> kommuner = new ArrayList<>();
         for (Kommune kommune : kommuneRepository.findAll()) {
             kommuner.add(kommune);
         }
