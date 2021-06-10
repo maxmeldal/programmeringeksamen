@@ -1,6 +1,8 @@
 package com.example.programmeringeksamen.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,8 +19,9 @@ public class Sogn {
     private String navn;
 
     //OneToOne relationship
-    @JsonManagedReference
-    @OneToOne (cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "kommune_id")
     private Kommune kommune;
 
     private Double smittetryk;
@@ -28,9 +31,10 @@ public class Sogn {
     public Sogn() {
     }
 
-    public Sogn(Long kode, String navn, Double smittetryk, LocalDate datoForNedlukning) {
+    public Sogn(Long kode, String navn, Kommune kommune, Double smittetryk, LocalDate datoForNedlukning) {
         this.kode = kode;
         this.navn = navn;
+        this.kommune = kommune;
         this.smittetryk = smittetryk;
         this.datoForNedlukning = datoForNedlukning;
     }

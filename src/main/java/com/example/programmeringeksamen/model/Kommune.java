@@ -1,8 +1,10 @@
 package com.example.programmeringeksamen.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Kommune {
@@ -16,17 +18,16 @@ public class Kommune {
     private String navn;
 
     //OneToOne relationship
-    @JsonBackReference
-    @OneToOne
-    private Sogn sogn;
+    @JsonManagedReference
+    @OneToMany (cascade = CascadeType.ALL, mappedBy = "kommune")
+    private Set<Sogn> sogne;
 
     public Kommune() {
     }
 
-    public Kommune(Long kode, String navn, Sogn sogn) {
+    public Kommune(Long kode, String navn) {
         this.kode = kode;
         this.navn = navn;
-        this.sogn = sogn;
     }
 
     public long getId() {
@@ -53,12 +54,12 @@ public class Kommune {
         this.navn = navn;
     }
 
-    public Sogn getSogn() {
-        return sogn;
+    public Set<Sogn> getSogne() {
+        return sogne;
     }
 
-    public void setSogn(Sogn sogn) {
-        this.sogn = sogn;
+    public void setSogne(Set<Sogn> sogns) {
+        this.sogne = sogns;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class Kommune {
                 "id=" + id +
                 ", kode=" + kode +
                 ", navn='" + navn + '\'' +
-                ", sogn=" + sogn +
+                ", sogns=" + sogne +
                 '}';
     }
 }

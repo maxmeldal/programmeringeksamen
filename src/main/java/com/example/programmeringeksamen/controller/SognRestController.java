@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @org.springframework.web.bind.annotation.RestController
@@ -45,27 +47,28 @@ public class SognRestController {
     }
 
     @CrossOrigin(origins = "*", exposedHeaders = "Location")
-    @PostMapping(value = "/sogne", consumes = "application/json")
-    public ResponseEntity<String> create (@RequestBody Sogn s){
+    @PostMapping(value = "/sogne/{id}", consumes = "application/json")
+    //create url takes kommune id as pathvariable and relates
+    public ResponseEntity<String> create (@PathVariable("id")Long id, @RequestBody Sogn s){
+
+        //local list of kommune ids
+        List<Long> ids = new ArrayList<>();
+        for (Kommune kommune: kommuneRepository.findAll()) {
+            ids.add(kommune.getId());
+        }
+
+        //if kommune id path variable does not exist as kommune id, return not found message
+        if (!ids.contains(id)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{'msg' : 'kommune " + id + " not found'}");
+        }
+
         //save input in local object
-        Sogn sogn = new Sogn(s.getKode(), s.getNavn(), s.getSmittetryk(), s.getDatoForNedlukning());
+        Sogn sogn = new Sogn(s.getKode(), s.getNavn(), kommuneRepository.findById(id).get(), s.getSmittetryk(), s.getDatoForNedlukning());
         //save local object
         sognRepository.save(sogn);
 
-        //get kommune from input
-        Kommune kommune = s.getKommune();
-        //set kommune's sogn to local object
-        kommune.setSogn(sogn);
-        //save kommune
-        kommuneRepository.save(kommune);
-
-        //set sogn's kommune to the one just created
-        sogn.setKommune(kommune);
-        //save that sogn
-        sognRepository.save(sogn);
-
         return ResponseEntity.status(HttpStatus.CREATED).header("Location", "/sogn/" + sogn.getKode())
-                .body("{'msg': 'Post Created'}");
+                .body("{'msg': 'sogn " + sogn.getId() + " created'}");
     }
 
     @PutMapping("/sogn/{id}")
@@ -75,15 +78,16 @@ public class SognRestController {
         Optional<Sogn> optionalSogn = sognRepository.findById(id);
 
         //return not found if id doesn't exist
-        if(!optionalSogn.isPresent()){
+        if(optionalSogn.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{'msg' : 'sogn " + id + " not found'");
         }
 
         //update sogn
+        sogn.setId(id);
         sognRepository.save(sogn);
 
         //return no content
-        return ResponseEntity.status(HttpStatus.OK).body("{'msg' : 'updated'}");
+        return ResponseEntity.status(HttpStatus.OK).body("{'msg' : 'sogn " + id + " updated'}");
     }
 
     @DeleteMapping("/sogn/{id}")
@@ -93,7 +97,7 @@ public class SognRestController {
         Optional<Sogn> optionalSogn = sognRepository.findById(id);
 
         //return not found if id doesn't exist
-        if(!optionalSogn.isPresent()){
+        if(optionalSogn.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{'msg' : 'sogn " + id + " not found'");
         }
 
@@ -106,7 +110,7 @@ public class SognRestController {
         sognRepository.save(sogn);
 
         //set kommune's sogn to null
-        kommune.setSogn(null);
+        //kommune.setSogn(null);
         kommuneRepository.save(kommune);
 
         //delete kommune and sogn
@@ -115,6 +119,6 @@ public class SognRestController {
 
 
         //return status ok
-        return ResponseEntity.status(HttpStatus.OK).body("{'msg' : 'deleted'}");
+        return ResponseEntity.status(HttpStatus.OK).body("{'msg' : 'sogn " + id + " deleted'}");
     }
 }
