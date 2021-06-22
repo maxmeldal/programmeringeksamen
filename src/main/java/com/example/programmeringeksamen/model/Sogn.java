@@ -18,7 +18,7 @@ public class Sogn {
 
     private String navn;
 
-    //OneToOne relationship
+    //ManyToOne relationship
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "kommune_id")
